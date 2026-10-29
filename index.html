@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8"> 
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>Yang Technology｜全端系統研發與 AI 應用作品集</title>
   <meta name="description" content="專注於商用 SaaS 訂閱平台、生成式 AI 多模態應用、極速快取架構與自動化行政中樞之全端系統作品集。">
@@ -181,22 +181,6 @@
       border-color: var(--brand-primary);
     }
 
-    .btn-contact-nav {
-      text-decoration: none;
-      background: var(--text-main);
-      color: var(--bg-card);
-      font-weight: 700;
-      font-size: 0.88rem;
-      padding: 9px 18px;
-      border-radius: var(--radius-pill);
-      transition: var(--transition-fast);
-    }
-
-    .btn-contact-nav:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
-    }
-
     /* ==================== 主視覺 Hero 區塊 ==================== */
     .container {
       max-width: 1220px;
@@ -352,7 +336,7 @@
       color: #60a5fa;
     }
 
-    /* ==================== 旗艦級雙欄作品集卡片 (完美復刻並升級參考圖) ==================== */
+    /* ==================== 旗艦級雙欄作品集卡片 ==================== */
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -380,7 +364,6 @@
       border-color: var(--border-hover);
     }
 
-    /* 精選特殊漸層底色卡片 (對應參考圖 1 的暖金與淡紫漸層) */
     .project-card.theme-gold {
       background: linear-gradient(145deg, #fffbeb 0%, #fef3c7 45%, #ffffff 100%);
       border-color: #fde68a;
@@ -407,7 +390,6 @@
       border-color: rgba(16, 185, 129, 0.35);
     }
 
-    /* 右上角角標 (Featured / 參賽作品) */
     .corner-ribbon {
       position: absolute;
       top: 16px;
@@ -427,7 +409,6 @@
       box-shadow: 0 4px 10px rgba(16, 185, 129, 0.28);
     }
 
-    /* 卡片標題與立體圖示盒 */
     .card-head-row {
       display: flex;
       align-items: center;
@@ -475,7 +456,6 @@
       font-weight: 500;
     }
 
-    /* 技術亮點區塊 */
     .highlights-title {
       display: flex;
       align-items: center;
@@ -520,7 +500,6 @@
       background: var(--brand-primary);
     }
 
-    /* 卡片底部：技術標籤 + 網址/保護狀態按鈕 */
     .card-footer-area {
       border-top: 1px solid rgba(148, 163, 184, 0.22);
       padding-top: 18px;
@@ -664,7 +643,7 @@
       line-height: 1.65;
     }
 
-    /* ==================== 頁尾與聯絡區塊 ==================== */
+    /* ==================== 頁尾區塊 ==================== */
     .footer {
       border-top: 1px solid var(--border-color);
       background: var(--bg-card);
@@ -863,12 +842,10 @@
       <ul class="nav-links">
         <li><a href="#projects">實戰系統作品</a></li>
         <li><a href="#architecture">核心技術架構</a></li>
-        <li><a href="#contact">聯繫與交流</a></li>
       </ul>
 
       <div class="nav-actions">
         <button type="button" class="theme-btn" id="themeToggleBtn" onclick="toggleDarkMode()" title="切換深淺色主題">🌙</button>
-        <a href="#contact" class="btn-contact-nav">聯絡開發者</a>
       </div>
     </nav>
   </div>
@@ -1268,8 +1245,8 @@
     </section>
   </main>
 
-  <!-- ==================== 頁尾與聯絡資訊 ==================== -->
-  <footer id="contact" class="footer">
+  <!-- ==================== 頁尾區塊 ==================== -->
+  <footer class="footer">
     <div class="container footer-inner">
       <div>
         <div class="brand" style="margin-bottom: 6px;">
@@ -1280,7 +1257,6 @@
       </div>
 
       <div class="footer-links">
-        <a href="mailto:brianyang0712@gmail.com">📧 brianyang0712@gmail.com</a>
         <a href="https://vocab.yangtechnology.com/" target="_blank" rel="noopener">VocabMaster</a>
         <a href="https://analysis.yangtechnology.com/" target="_blank" rel="noopener">升學落點分析</a>
         <a href="http://shopee.photo.yangtechnology.com/" target="_blank" rel="noopener">拍立得編輯器</a>
