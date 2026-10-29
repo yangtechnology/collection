@@ -1,1 +1,1540 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Yang Technology｜全端系統研發與 AI 應用作品集</title>
+  <meta name="description" content="專注於商用 SaaS 訂閱平台、生成式 AI 多模態應用、極速快取架構與自動化行政中樞之全端系統作品集。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-page: #f8fafc;
+      --bg-surface: rgba(255, 255, 255, 0.92);
+      --bg-card: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --text-main: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --border-hover: #cbd5e1;
 
+      --brand-primary: #2563eb;
+      --brand-indigo: #4f46e5;
+      --brand-amber: #f59e0b;
+      --brand-emerald: #10b981;
+      --brand-rose: #e11d48;
+
+      --shadow-sm: 0 2px 8px -2px rgba(15, 23, 42, 0.05);
+      --shadow-card: 0 12px 32px -8px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+      --shadow-hover: 0 22px 45px -12px rgba(15, 23, 42, 0.13), 0 4px 12px -2px rgba(15, 23, 42, 0.05);
+      --shadow-modal: 0 25px 60px -15px rgba(15, 23, 42, 0.35);
+
+      --radius-2xl: 24px;
+      --radius-xl: 18px;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --radius-pill: 9999px;
+
+      --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-spring: 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body.dark-mode {
+      --bg-page: #090d16;
+      --bg-surface: rgba(15, 23, 42, 0.88);
+      --bg-card: #131c2e;
+      --bg-subtle: #1e293b;
+      --text-main: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border-color: #1e293b;
+      --border-hover: #334155;
+
+      --shadow-sm: 0 2px 8px -2px rgba(0, 0, 0, 0.3);
+      --shadow-card: 0 12px 32px -8px rgba(0, 0, 0, 0.45);
+      --shadow-hover: 0 22px 45px -12px rgba(0, 0, 0, 0.65);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-page);
+      background-image: 
+        radial-gradient(at 12% 0%, rgba(37, 99, 235, 0.06) 0px, transparent 45%),
+        radial-gradient(at 88% 8%, rgba(245, 158, 11, 0.06) 0px, transparent 45%),
+        radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.04) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      overflow-x: hidden;
+    }
+
+    /* ==================== 頂部毛玻璃導覽列 ==================== */
+    .navbar-wrapper {
+      position: sticky;
+      top: 14px;
+      z-index: 100;
+      padding: 0 20px;
+      margin-bottom: 10px;
+    }
+
+    .navbar {
+      max-width: 1220px;
+      margin: 0 auto;
+      background: var(--bg-surface);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-pill);
+      padding: 8px 14px 8px 20px;
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-fast);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 900;
+      font-size: 1.12rem;
+      letter-spacing: -0.4px;
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #0f172a 0%, #2563eb 100%);
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1rem;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      transition: var(--transition-fast);
+    }
+
+    .nav-links a:hover {
+      color: var(--text-main);
+      background: var(--bg-subtle);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .theme-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-main);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.05rem;
+      transition: var(--transition-fast);
+    }
+
+    .theme-btn:hover {
+      transform: scale(1.06);
+      border-color: var(--brand-primary);
+    }
+
+    .btn-contact-nav {
+      text-decoration: none;
+      background: var(--text-main);
+      color: var(--bg-card);
+      font-weight: 700;
+      font-size: 0.88rem;
+      padding: 9px 18px;
+      border-radius: var(--radius-pill);
+      transition: var(--transition-fast);
+    }
+
+    .btn-contact-nav:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    /* ==================== 主視覺 Hero 區塊 ==================== */
+    .container {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .hero {
+      padding: 56px 0 44px;
+      text-align: center;
+      max-width: 880px;
+      margin: 0 auto;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: var(--radius-pill);
+      background: rgba(37, 99, 235, 0.08);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      color: var(--brand-primary);
+      font-size: 0.84rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    body.dark-mode .hero-pill {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+    }
+
+    .hero-title {
+      font-size: clamp(2.1rem, 4.5vw, 3.35rem);
+      font-weight: 900;
+      letter-spacing: -1.2px;
+      line-height: 1.18;
+      margin-bottom: 18px;
+      color: var(--text-main);
+    }
+
+    .hero-title .gradient-text {
+      background: linear-gradient(135deg, #2563eb 0%, #4f46e5 50%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    body.dark-mode .hero-title .gradient-text {
+      background: linear-gradient(135deg, #60a5fa 0%, #818cf8 50%, #fbbf24 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 1.8vw, 1.14rem);
+      color: var(--text-secondary);
+      max-width: 720px;
+      margin: 0 auto 32px;
+      font-weight: 500;
+    }
+
+    /* 關鍵數據指標列 */
+    .metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      max-width: 960px;
+      margin: 0 auto 48px;
+    }
+
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 18px 16px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .metric-val {
+      font-size: 1.65rem;
+      font-weight: 900;
+      color: var(--text-main);
+      letter-spacing: -0.6px;
+      line-height: 1.2;
+    }
+
+    .metric-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ==================== 專案分類篩選列 ==================== */
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: var(--text-main);
+    }
+
+    .section-desc {
+      color: var(--text-secondary);
+      font-size: 0.94rem;
+      margin-top: 4px;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      background: var(--bg-subtle);
+      padding: 5px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-color);
+    }
+
+    .filter-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .filter-btn:hover {
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: var(--bg-card);
+      color: var(--brand-primary);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+    }
+
+    body.dark-mode .filter-btn.active {
+      color: #60a5fa;
+    }
+
+    /* ==================== 旗艦級雙欄作品集卡片 (完美復刻並升級參考圖) ==================== */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 72px;
+    }
+
+    .project-card {
+      position: relative;
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-2xl);
+      padding: 32px 30px 26px;
+      box-shadow: var(--shadow-card);
+      transition: var(--transition-spring);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--border-hover);
+    }
+
+    /* 精選特殊漸層底色卡片 (對應參考圖 1 的暖金與淡紫漸層) */
+    .project-card.theme-gold {
+      background: linear-gradient(145deg, #fffbeb 0%, #fef3c7 45%, #ffffff 100%);
+      border-color: #fde68a;
+    }
+    .project-card.theme-indigo {
+      background: linear-gradient(145deg, #f5f3ff 0%, #eef2ff 45%, #ffffff 100%);
+      border-color: #c7d2fe;
+    }
+    .project-card.theme-emerald {
+      background: linear-gradient(145deg, #ecfdf5 0%, #f0fdf4 40%, #ffffff 100%);
+      border-color: #a7f3d0;
+    }
+
+    body.dark-mode .project-card.theme-gold {
+      background: linear-gradient(145deg, rgba(245, 158, 11, 0.12) 0%, #131c2e 65%);
+      border-color: rgba(245, 158, 11, 0.35);
+    }
+    body.dark-mode .project-card.theme-indigo {
+      background: linear-gradient(145deg, rgba(99, 102, 241, 0.14) 0%, #131c2e 65%);
+      border-color: rgba(99, 102, 241, 0.35);
+    }
+    body.dark-mode .project-card.theme-emerald {
+      background: linear-gradient(145deg, rgba(16, 185, 129, 0.12) 0%, #131c2e 65%);
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+
+    /* 右上角角標 (Featured / 參賽作品) */
+    .corner-ribbon {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      padding: 4px 13px;
+      border-radius: var(--radius-pill);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      color: #ffffff;
+      background: #2563eb;
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+    }
+
+    .corner-ribbon.ribbon-award {
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.28);
+    }
+
+    /* 卡片標題與立體圖示盒 */
+    .card-head-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+      padding-right: 85px;
+    }
+
+    .card-icon-box {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      background: #ffffff;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 6px 16px -4px rgba(15, 23, 42, 0.07);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    body.dark-mode .card-icon-box {
+      background: #1e293b;
+      border-color: #334155;
+    }
+
+    .card-icon-box svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .card-title {
+      font-size: 1.38rem;
+      font-weight: 900;
+      color: var(--text-main);
+      letter-spacing: -0.3px;
+      line-height: 1.3;
+    }
+
+    .card-summary {
+      color: var(--text-secondary);
+      font-size: 0.96rem;
+      line-height: 1.65;
+      margin-bottom: 22px;
+      font-weight: 500;
+    }
+
+    /* 技術亮點區塊 */
+    .highlights-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 12px;
+    }
+
+    .highlights-title code {
+      color: var(--brand-primary);
+      font-weight: 900;
+      font-family: monospace;
+      font-size: 0.95rem;
+    }
+
+    .highlights-list {
+      list-style: none;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .highlights-list li {
+      position: relative;
+      padding-left: 16px;
+      font-size: 0.91rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    .highlights-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 9px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--brand-primary);
+    }
+
+    /* 卡片底部：技術標籤 + 網址/保護狀態按鈕 */
+    .card-footer-area {
+      border-top: 1px solid rgba(148, 163, 184, 0.22);
+      padding-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tech-pill {
+      padding: 5px 13px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1px;
+    }
+
+    body.dark-mode .tech-pill {
+      background: rgba(30, 41, 59, 0.9);
+      border-color: #334155;
+      color: #cbd5e1;
+    }
+
+    .action-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 10px 18px;
+      border-radius: var(--radius-lg);
+      font-size: 0.86rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: var(--transition-fast);
+      font-family: inherit;
+    }
+
+    .btn-live {
+      background: var(--text-main);
+      color: var(--bg-card);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+    }
+
+    .btn-live:hover {
+      background: var(--brand-primary);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .btn-preview {
+      background: var(--bg-subtle);
+      color: var(--text-main);
+      border-color: var(--border-color);
+    }
+
+    .btn-preview:hover {
+      border-color: var(--brand-primary);
+      color: var(--brand-primary);
+    }
+
+    .status-badge-private {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: var(--radius-lg);
+      background: rgba(100, 116, 139, 0.1);
+      border: 1px dashed var(--border-hover);
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .status-badge-contest {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: var(--radius-lg);
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #059669;
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    body.dark-mode .status-badge-contest {
+      color: #34d399;
+    }
+
+    /* ==================== 技術架構深度區塊 ==================== */
+    .arch-section {
+      margin-bottom: 72px;
+    }
+
+    .arch-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .arch-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 26px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .arch-card h4 {
+      font-size: 1.08rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .arch-card p {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* ==================== 頁尾與聯絡區塊 ==================== */
+    .footer {
+      border-top: 1px solid var(--border-color);
+      background: var(--bg-card);
+      padding: 48px 0 40px;
+      margin-top: 40px;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-copy {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: var(--transition-fast);
+    }
+
+    .footer-links a:hover {
+      color: var(--brand-primary);
+    }
+
+    /* ==================== 系統架構與介面預覽 Modal ==================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+      animation: modalFade 0.22s ease-out;
+    }
+
+    .modal-dialog {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-2xl);
+      width: 100%;
+      max-width: 780px;
+      max-height: 88vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-modal);
+      animation: modalPop 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-header {
+      padding: 22px 28px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: var(--bg-card);
+      z-index: 10;
+    }
+
+    .modal-header h3 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--text-main);
+    }
+
+    .modal-close-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border-color);
+      background: var(--bg-subtle);
+      color: var(--text-main);
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      padding: 26px 28px;
+    }
+
+    .preview-mockup {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      margin-bottom: 22px;
+    }
+
+    .arch-flow-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .arch-flow-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+    }
+
+    .arch-flow-step strong {
+      display: block;
+      font-size: 0.86rem;
+      color: var(--brand-primary);
+      margin-bottom: 4px;
+    }
+
+    .arch-flow-step span {
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+    }
+
+    @keyframes modalFade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* ==================== 響應式優化 ==================== */
+    @media (max-width: 960px) {
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+      .arch-grid {
+        grid-template-columns: 1fr;
+      }
+      .metrics-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-links {
+        display: none;
+      }
+      .hero {
+        padding: 36px 0 28px;
+      }
+      .project-card {
+        padding: 24px 20px 22px;
+      }
+      .card-head-row {
+        padding-right: 0;
+        margin-top: 18px;
+      }
+      .action-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .btn-action, .status-badge-private, .status-badge-contest {
+        justify-content: center;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== 頂部懸浮導覽列 ==================== -->
+  <div class="navbar-wrapper">
+    <nav class="navbar">
+      <a href="#" class="brand">
+        <span class="brand-mark">YT</span>
+        <span>Yang Technology</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#projects">實戰系統作品</a></li>
+        <li><a href="#architecture">核心技術架構</a></li>
+        <li><a href="#contact">聯繫與交流</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button type="button" class="theme-btn" id="themeToggleBtn" onclick="toggleDarkMode()" title="切換深淺色主題">🌙</button>
+        <a href="#contact" class="btn-contact-nav">聯絡開發者</a>
+      </div>
+    </nav>
+  </div>
+
+  <main class="container">
+    <!-- ==================== 主視覺 Hero ==================== -->
+    <section class="hero">
+      <div class="hero-pill">⚡ Full-Stack Web Apps · Generative AI · High-Performance GAS</div>
+      <h1 class="hero-title">
+        打造兼具商業價值與極致體驗的<br>
+        <span class="gradient-text">全端數位系統與 AI 應用</span>
+      </h1>
+      <p class="hero-subtitle">
+        從訂閱制教育 SaaS、校園 AI 流量管制 POS，到大型機構與社團數位化中樞。專注於解決真實世界流程痛點，以極速前端快取架構與多模態 AI 賦能每一套產品。
+      </p>
+    </section>
+
+    <!-- 關鍵實戰指標 -->
+    <section class="metrics-bar">
+      <div class="metric-card">
+        <div class="metric-val">7+</div>
+        <div class="metric-label">上線實戰系統專案</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">ECPay & LINE</div>
+        <div class="metric-label">商用金流與 OAuth 推播整合</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">Gemini 2.5</div>
+        <div class="metric-label">多模態視覺與智慧顧問串接</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">&lt; 50ms</div>
+        <div class="metric-label">SWR 樂觀快取體感延遲</div>
+      </div>
+    </section>
+
+    <!-- ==================== 專案作品集區塊 ==================== -->
+    <section id="projects">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">實戰系統作品集</h2>
+          <p class="section-desc">涵蓋商用學習平台、AI 智慧餐飲 POS、升學大數據分析與組織自動化管理系統</p>
+        </div>
+
+        <div class="filter-tabs">
+          <button type="button" class="filter-btn active" onclick="filterProjects('all', this)">全部作品 (7)</button>
+          <button type="button" class="filter-btn" onclick="filterProjects('ai-saas', this)">AI 與商用 SaaS</button>
+          <button type="button" class="filter-btn" onclick="filterProjects('org-pos', this)">組織管理與 POS</button>
+          <button type="button" class="filter-btn" onclick="filterProjects('public', this)">可線上體驗</button>
+        </div>
+      </div>
+
+      <div class="projects-grid" id="projectsGrid">
+
+        <!-- 1. 學測英文系統 (VocabMaster / Vocab Nexus) -->
+        <article class="project-card theme-gold" data-category="ai-saas public">
+          <div>
+            <span class="corner-ribbon">Featured</span>
+            <div class="card-head-row">
+              <div class="card-icon-box" style="color: #d97706;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+              </div>
+              <h3 class="card-title">學測英文系統 (VocabMaster)</h3>
+            </div>
+
+            <p class="card-summary">
+              商用 SaaS 級應用，結合遊戲化學習與 AI 智能輔助，打造全方位英文測驗與學習平台。
+            </p>
+
+            <div class="highlights-title"><code>&lt;/&gt;</code> 技術亮點與特色</div>
+            <ul class="highlights-list">
+              <li>綠界金流 (ECPay) 訂閱制整合與動態折扣碼核銷引擎</li>
+              <li>LINE OAuth2 一鍵登入、每日 Flex 推播與戰隊即時聊天室</li>
+              <li>Gemini AI 仿真大考中心五維度作文批改與隨身家教</li>
+              <li>SM-2 間隔重複演算法錯題記憶引擎與離線 PWA 支援</li>
+            </ul>
+          </div>
+
+          <div class="card-footer-area">
+            <div class="tag-row">
+              <span class="tech-pill">SaaS</span>
+              <span class="tech-pill">Gemini AI</span>
+              <span class="tech-pill">ECPay 金流</span>
+              <span class="tech-pill">LINE OAuth2</span>
+              <span class="tech-pill">SM-2 演算法</span>
+            </div>
+            <div class="action-row">
+              <a href="https://vocab.yangtechnology.com/" target="_blank" rel="noopener noreferrer" class="btn-action btn-live">
+                <span>🌐 前往線上系統</span>
+                <span>↗</span>
+              </a>
+              <button type="button" class="btn-action btn-preview" onclick="openProjectModal('vocab')">
+                <span>🔍 系統架構解析</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2. Yang Tech 升學落點分析系統 -->
+        <article class="project-card theme-indigo" data-category="ai-saas public">
+          <div>
+            <span class="corner-ribbon">Featured</span>
+            <div class="card-head-row">
+              <div class="card-icon-box" style="color: #7c3aed;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z"></path>
+                </svg>
+              </div>
+              <h3 class="card-title">Yang Tech 升學落點分析系統</h3>
+            </div>
+
+            <p class="card-summary">
+              支援個人申請、四技科大與分科測驗，提供精準落點預測與 AI 智能志願推薦。
+            </p>
+
+            <div class="highlights-title"><code>&lt;/&gt;</code> 技術亮點與特色</div>
+            <ul class="highlights-list">
+              <li>突破 GAS 100KB 限制的高速快取分塊 (Chunking) 技術</li>
+              <li>Gemini AI 智能志願推薦與個人化二階面試策略分析</li>
+              <li>複雜的多維度落點演算法與二階面試志願撞期偵測</li>
+              <li>支援 PWA 架構，提供跨裝置 App 級流暢原生體驗</li>
+            </ul>
+          </div>
+
+          <div class="card-footer-area">
+            <div class="tag-row">
+              <span class="tech-pill">PWA</span>
+              <span class="tech-pill">Gemini AI</span>
+              <span class="tech-pill">快取分塊</span>
+              <span class="tech-pill">資料分析</span>
+            </div>
+            <div class="action-row">
+              <a href="https://analysis.yangtechnology.com/" target="_blank" rel="noopener noreferrer" class="btn-action btn-live">
+                <span>🌐 前往線上系統</span>
+                <span>↗</span>
+              </a>
+              <button type="button" class="btn-action btn-preview" onclick="openProjectModal('analysis')">
+                <span>🔍 系統架構解析</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- 3. MealFlow 學餐 AI 流量管制系統 (競賽作品) -->
+        <article class="project-card theme-emerald" data-category="ai-saas org-pos">
+          <div>
+            <span class="corner-ribbon ribbon-award">🏆 競賽作品</span>
+            <div class="card-head-row">
+              <div class="card-icon-box" style="color: #059669;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                  <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                  <line x1="6" y1="1" x2="6" y2="4"></line>
+                  <line x1="10" y1="1" x2="10" y2="4"></line>
+                  <line x1="14" y1="1" x2="14" y2="4"></line>
+                </svg>
+              </div>
+              <h3 class="card-title">MealFlow 學餐 AI 流量管制塔</h3>
+            </div>
+
+            <p class="card-summary">
+              結合排隊理論與生成式 AI 的校園智慧點餐與 POS 管制中樞，透過動態等待時間預測與分流優惠解決學餐尖峰壅塞。
+            </p>
+
+            <div class="highlights-title"><code>&lt;/&gt;</code> 技術亮點與特色</div>
+            <ul class="highlights-list">
+              <li>M/M/1 佇列動態備餐演算法與 AI 效用評分智慧分流導購</li>
+              <li>LINE OAuth 2.1 免 Webhook 綁定與 Flex 動態取餐推播</li>
+              <li>Gemini 2.5 Vision 菜單影像辨識建檔與意圖感知選餐顧問</li>
+              <li>支援跨日預訂規則、逾期未繳自動巡檢刪單與觸控 POS 收銀</li>
+            </ul>
+          </div>
+
+          <div class="card-footer-area">
+            <div class="tag-row">
+              <span class="tech-pill">M/M/1 排隊理論</span>
+              <span class="tech-pill">LINE Messaging API</span>
+              <span class="tech-pill">Gemini Vision</span>
+              <span class="tech-pill">雲端 POS</span>
+            </div>
+            <div class="action-row">
+              <span class="status-badge-contest">🏆 競賽評選期間（暫不公開網址）</span>
+              <button type="button" class="btn-action btn-preview" onclick="openProjectModal('mealflow')">
+                <span>🖥️ 預覽架構與介面</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4. 東吳管樂社管理系統 -->
+        <article class="project-card" data-category="org-pos">
+          <div>
+            <div class="card-head-row">
+              <div class="card-icon-box" style="color: #4f46e5;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 18V5l12-2v13"></path>
+                  <circle cx="6" cy="18" r="3"></circle>
+                  <circle cx="18" cy="16" r="3"></circle>
+                </svg>
+              </div>
+              <h3 class="card-title">東吳管樂社數位團務系統</h3>
+            </div>
+
+            <p class="card-summary">
+              專為大學管樂社打造的數位團務中心，整合團練請假、琴房預約、互動式視覺化座位表與幹部後台，全面自動化社團行政。
+            </p>
+
+            <div class="highlights-title"><code>&lt;/&gt;</code> 技術亮點與特色</div>
+            <ul class="highlights-list">
+              <li>SWR (Stale-While-Revalidate) 快取與打包預載，實現零延遲切換</li>
+              <li>SVG 點陣舞台座位表，支援拖曳旋轉微調與請假人員自動重排</li>
+              <li>每週日排程觸發器與一鍵批次寄發 B/D 棟專屬借教室審核通知信</li>
+              <li>支援姓名/信箱雙軌登入、跨表歷史紀錄自動同步與幹部權限隔離</li>
+            </ul>
+          </div>
+
+          <div class="card-footer-area">
+            <div class="tag-row">
+              <span class="tech-pill">SWR 極速快取</span>
+              <span class="tech-pill">SVG 互動座位表</span>
+              <span class="tech-pill">排程批次寄信</span>
+              <span class="tech-pill">RBAC 權限控管</span>
+            </div>
+            <div class="action-row">
+              <span class="status-badge-private">🔒 內部系統（涉及社員個資不公開網址）</span>
+              <button type="button" class="btn-action btn-preview" onclick="openProjectModal('scuband')">
+                <span>🖥️ 預覽架構與介面</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- 5. 拍立得小卡專屬編輯器 -->
+        <article class="project-card" data-category="ai-saas public">
+          <div>
+            <div class="card-head-row">
+              <div class="card-icon-box" style="color: #db2777;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="3" y1="9" x2="21" y2="9"></line>
+                  <line x1="9" y1="21" x2="9" y2="9"></line>
+                </svg>
+              </div>
+              <h3 class="card-title">拍立得小卡專屬編輯器</h3>
+            </div>
+
+            <p class="card-summary">
+              為電商客製化商品打造的線上編輯器，提供消費者自行排版設計與即時預覽的專屬工具。
+            </p>
+
+            <div class="highlights-title"><code>&lt;/&gt;</code> 技術亮點與特色</div>
+            <ul class="highlights-list">
+              <li>線上互動式畫布編輯，所見即所得 (WYSIWYG) 直覺排版體驗</li>
+              <li>深度整合 Fabric.js 進行進階影像裁切、濾鏡與圖層處理</li>
+              <li>透過 GmailApp 自動化串接與解析蝦皮電商訂單狀態</li>
+              <li>高解析度印刷級圖檔自動轉檔與雲端批次匯出流程</li>
+            </ul>
+          </div>
+
+          <div class="card-footer-area">
+            <div class="tag-row">
+              <span class="tech-pill">Fabric.js</span>
+              <span class="tech-pill">蝦皮訂單解析</span>
+              <span class="tech-pill">影像處理</span>
+              <span class="tech-pill">WYSIWYG</span>
+            </div>
+            <div class="action-row">
+              <a href="http://shopee.photo.yangtechnology.com/" target="_blank" rel="noopener noreferrer" class="btn-action btn-live">
+                <span>🌐 前往線上系統</span>
+                <span>↗</span>
+              </a>
+              <button type="button" class="btn-action btn-preview" onclick="openProjectModal('polaroid')">
+                <span>🔍 系統架構解析</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- 6. 大補習班排課與請假系統 -->
+        <article class="project-card" data-category="org-pos">
+          <div>
+            <div class="card-head-row">
+              <div class="card-icon-box" style="color: #2563eb;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                  <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                  <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                </svg>
+              </div>
+              <h3 class="card-title">大補習班排課與請假系統</h3>
+            </div>
+
+            <p class="card-summary">
+              專為大型補習班設計的完整排班、請假與代課管理中樞，大幅降低教務與行政溝通成本。
+            </p>
+
+            <div class="highlights-title"><code>&lt;/&gt;</code> 技術亮點與特色</div>
+            <ul class="highlights-list">
+              <li>直覺化通訊介面與即時訊息狀態同步機制</li>
+              <li>獨創智慧樣板避讓法 (Smart Template Scheduling) 解決衝堂</li>
+              <li>多維度資料表關聯同步與 Google 行事曆自動排程派發</li>
+              <li>完整的師資代課媒合紀錄與出缺勤時數自動結算報表</li>
+            </ul>
+          </div>
+
+          <div class="card-footer-area">
+            <div class="tag-row">
+              <span class="tech-pill">通訊整合 UI</span>
+              <span class="tech-pill">排程演算法</span>
+              <span class="tech-pill">行事曆同步</span>
+            </div>
+            <div class="action-row">
+              <span class="status-badge-private">🔒 內部系統（涉及機構個資不公開網址）</span>
+              <button type="button" class="btn-action btn-preview" onclick="openProjectModal('cram')">
+                <span>🖼️ 檢視系統畫面與架構</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- 7. 智慧點餐系統 (高中社團與餐廳) -->
+        <article class="project-card" data-category="org-pos">
+          <div>
+            <div class="card-head-row">
+              <div class="card-icon-box" style="color: #16a34a;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                  <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                </svg>
+              </div>
+              <h3 class="card-title">智慧點餐系統</h3>
+            </div>
+
+            <p class="card-summary">
+              適用於高中社團與餐廳的線上團膳點餐平台，提供直覺的點餐流程與即時後台管理。
+            </p>
+
+            <div class="highlights-title"><code>&lt;/&gt;</code> 技術亮點與特色</div>
+            <ul class="highlights-list">
+              <li>前後端分離架構，搭配流暢現代化的 Tailwind CSS 介面</li>
+              <li>整合 Intro.js 互動式使用者導覽功能，降低首次操作門檻</li>
+              <li>複雜的訂單狀態機與管理員專屬即時接單控制台</li>
+              <li>自動化班級/部門動態報表結算與每日營收視覺化分析</li>
+            </ul>
+          </div>
+
+          <div class="card-footer-area">
+            <div class="tag-row">
+              <span class="tech-pill">前後端分離</span>
+              <span class="tech-pill">Tailwind CSS</span>
+              <span class="tech-pill">訂單狀態機</span>
+            </div>
+            <div class="action-row">
+              <span class="status-badge-private">🔒 內部系統（涉及社團個資不公開網址）</span>
+              <button type="button" class="btn-action btn-preview" onclick="openProjectModal('smartorder')">
+                <span>🖼️ 檢視系統架構解析</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ==================== 核心工程哲學與架構能力 ==================== -->
+    <section id="architecture" class="arch-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">核心工程架構與設計標準</h2>
+          <p class="section-desc">每一套系統皆遵循高可用性、極速互動回饋與真實業務防呆準則</p>
+        </div>
+      </div>
+
+      <div class="arch-grid">
+        <div class="arch-card">
+          <h4>⚡ 極速前端快取與樂觀更新</h4>
+          <p>
+            針對無伺服器 (Serverless / GAS) 架構常見的冷啟動延遲，自主研發 <strong>SWR (Stale-While-Revalidate)</strong> 記憶體與本地端快取引擎、100KB 分塊傳輸技術以及單次打包預載接口 (Init Bundle)，實現秒開頁面與零阻塞的操作體驗。
+          </p>
+        </div>
+        <div class="arch-card">
+          <h4>🧠 領域驅動演算法與 AI 落地</h4>
+          <p>
+            不將 AI 視為單純的對話框，而是深度嵌入業務流程：結合 <strong>SM-2 記憶演算法</strong>、<strong>M/M/1 佇列數學模型</strong>與 <strong>Gemini 2.5 結構化 JSON 輸出</strong>，實現自動菜單建檔、精準落點預測與嚴格的閱卷評分系統。
+          </p>
+        </div>
+        <div class="arch-card">
+          <h4>🛡️ 商用級金流、權限與自動化</h4>
+          <p>
+            完整實作 <strong>綠界 ECPay CheckMacValue 簽章驗證</strong>、<strong>LINE Login OAuth 2.1 免 Webhook 綁定與 Flex 推播</strong>、SHA-256 加鹽雜湊與 LockService 併發鎖，確保多人尖峰操作下的資料一致性與資安防護。
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== 頁尾與聯絡資訊 ==================== -->
+  <footer id="contact" class="footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="brand" style="margin-bottom: 6px;">
+          <span class="brand-mark">YT</span>
+          <span>Yang Technology</span>
+        </div>
+        <p class="footer-copy">© 2026 Yang Technology. All Rights Reserved. 專注於打造極致流暢的全端 Web 系統。</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="mailto:brianyang0712@gmail.com">📧 brianyang0712@gmail.com</a>
+        <a href="https://vocab.yangtechnology.com/" target="_blank" rel="noopener">VocabMaster</a>
+        <a href="https://analysis.yangtechnology.com/" target="_blank" rel="noopener">升學落點分析</a>
+        <a href="http://shopee.photo.yangtechnology.com/" target="_blank" rel="noopener">拍立得編輯器</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== 專案架構與視覺化預覽彈窗 ==================== -->
+  <div id="projectModal" class="modal-backdrop" onclick="if(event.target===this) closeProjectModal()">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="modalTitle">系統架構解析</h3>
+        <button type="button" class="modal-close-btn" onclick="closeProjectModal()">✕</button>
+      </div>
+      <div class="modal-body" id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    // 深淺色主題切換
+    function toggleDarkMode() {
+      const isDark = document.body.classList.toggle('dark-mode');
+      localStorage.setItem('yt_portfolio_dark', isDark ? '1' : '0');
+      document.getElementById('themeToggleBtn').textContent = isDark ? '☀️' : '🌙';
+    }
+
+    (function initTheme() {
+      const saved = localStorage.getItem('yt_portfolio_dark');
+      if (saved === '1' || (saved === null && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.body.classList.add('dark-mode');
+        document.getElementById('themeToggleBtn').textContent = '☀️';
+      }
+    })();
+
+    // 專案分類過濾
+    function filterProjects(category, btnEl) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+
+      document.querySelectorAll('.project-card').forEach(card => {
+        const cats = card.getAttribute('data-category') || '';
+        if (category === 'all' || cats.includes(category)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // 專案深度解析與互動預覽資料庫
+    const PROJECT_DETAILS = {
+      vocab: {
+        title: '學測英文系統 (VocabMaster) — 架構深度解析',
+        privacyNote: '🌐 公開營運中系統：可直接點擊前往體驗完整功能',
+        liveUrl: 'https://vocab.yangtechnology.com/',
+        mockupHtml: `
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:10px;">
+            <div style="background:var(--bg-card); padding:14px; border-radius:12px; border:1px solid var(--border-color);">
+              <div style="font-size:0.75rem; color:var(--text-muted); font-weight:700;">商用金流</div>
+              <div style="font-size:1.05rem; font-weight:900; color:#d97706; margin-top:4px;">ECPay 綠界 AioCheckOut</div>
+              <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px;">支援月繳/學測衝刺包/年繳與試算表動態折扣碼核銷</div>
+            </div>
+            <div style="background:var(--bg-card); padding:14px; border-radius:12px; border:1px solid var(--border-color);">
+              <div style="font-size:0.75rem; color:var(--text-muted); font-weight:700;">記憶演算法</div>
+              <div style="font-size:1.05rem; font-weight:900; color:#2563eb; margin-top:4px;">SuperMemo SM-2 引擎</div>
+              <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px;">動態計算 E-Factor 與 1/3/7 天最佳複習區間</div>
+            </div>
+            <div style="background:var(--bg-card); padding:14px; border-radius:12px; border:1px solid var(--border-color);">
+              <div style="font-size:0.75rem; color:var(--text-muted); font-weight:700;">社群與留存</div>
+              <div style="font-size:1.05rem; font-weight:900; color:#10b981; margin-top:4px;">戰隊加成 & LINE Flex</div>
+              <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px;">連打 7/25 天自動解鎖 PRO 權限、全隊 1.3x 經驗加成</div>
+            </div>
+          </div>
+        `,
+        steps: [
+          { title: '前端樂觀狀態機', desc: '全機採用 AppState 與 LocalStorage 離線佇列，斷網時自動切換為快取題庫，恢復連線後自動背景同步成績。' },
+          { title: 'AI 結構化閱卷', desc: '強制 Gemini 2.5 Flash 回傳 JSON Schema，針對內容、組織、文法、詞彙與拼字進行五維度嚴格評分。' },
+          { title: '高併發快取防護', desc: '利用 GAS CacheService 快取使用者列號與戰隊聊天紀錄，搭配 LockService 防止多人同時寫入衝突。' }
+        ]
+      },
+      analysis: {
+        title: 'Yang Tech 升學落點分析系統 — 架構深度解析',
+        privacyNote: '🌐 公開營運中系統：支援個人申請、統測甄選與分科測驗',
+        liveUrl: 'https://analysis.yangtechnology.com/',
+        mockupHtml: `
+          <div style="background:var(--bg-card); padding:16px; border-radius:12px; border:1px solid var(--border-color);">
+            <div style="font-weight:800; color:var(--brand-indigo); margin-bottom:8px;">🚀 突破 GAS 100KB 單一鍵值限制之快取分塊架構 (Chunking Cache)</div>
+            <p style="font-size:0.86rem; color:var(--text-secondary);">全國數千個校系歷年篩選倍率與級分資料量龐大，系統透過自動分塊演算法將大型 JSON 拆解存入 CacheService，將查詢延遲壓低至毫秒級。</p>
+          </div>
+        `,
+        steps: [
+          { title: '多學制動態換算', desc: '同時支援學測五標檢定、篩選倍率加權、四技統測與分科測驗組合落點機率估算。' },
+          { title: '二階面試撞期偵測', desc: '自動比對考生勾選之夢幻、務實與安全校系二階指定項目甄試日期，即時標示衝堂風險。' },
+          { title: 'AI 備審與面試顧問', desc: '結合考生級分結構與目標校系特性，透過 Gemini 生成客製化選填策略與面試考古題方向。' }
+        ]
+      },
+      mealflow: {
+        title: 'MealFlow 學餐 AI 流量管制塔 — 競賽系統預覽',
+        privacyNote: '🏆 目前為參賽評選作品，為確保競賽公平與評審專用環境，暫不公開外部連結。以下為系統真實核心架構：',
+        mockupHtml: `
+          <div style="background:var(--bg-card); padding:16px; border-radius:12px; border:1px solid var(--border-color);">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+              <span style="font-weight:900; color:#059669;">🍱 東吳雙溪/城中校區 即時佇列負載模擬</span>
+              <span style="font-size:0.78rem; background:#ecfdf5; color:#047857; padding:3px 10px; border-radius:999px; font-weight:800;">M/M/1 Queueing Engine</span>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px,1fr)); gap:10px;">
+              <div style="padding:12px; border-radius:10px; background:#fff1f2; border:1px solid #fecdd3; color:#be123c;">
+                <div style="font-weight:800; font-size:0.9rem;">🔴 人氣韓式飯捲 (負載 94%)</div>
+                <div style="font-size:0.8rem; margin-top:4px;">待製 17 單 · 預估等待 22 分鐘</div>
+              </div>
+              <div style="padding:12px; border-radius:10px; background:#ecfdf5; border:1px solid #a7f3d0; color:#047857;">
+                <div style="font-weight:800; font-size:0.9rem;">🟢 日式丼物園 (AI 推薦分流)</div>
+                <div style="font-size:0.8rem; margin-top:4px;">預估 5 分鐘快取 · 🎁 分流送溫泉蛋</div>
+              </div>
+            </div>
+          </div>
+        `,
+        steps: [
+          { title: 'M/M/1 動態等待時間預測', desc: '依據各櫃位每 15 分鐘最大產能與即時待製單數，當負載率逾 85% 時自動加上非線性壅塞懲罰並啟動 AI 分流優惠券。' },
+          { title: 'LINE OAuth 2.1 + Email 雙軌推播', desc: '免架設外部 Webhook 伺服器即可一鍵取得 LINE userId，並支援店家自有官方帳號與無上限 HTML Email 取餐通知。' },
+          { title: '預訂防棄單與自動巡檢刪單', desc: '實作今日可付現、1~2天預訂僅限線上支付、3天以上遠期預訂須於前兩日櫃檯付現，逾期由後端自動巡檢刪單並推播通知。' }
+        ]
+      },
+      scuband: {
+        title: '東吳管樂社數位團務系統 — 系統畫面與架構預覽',
+        privacyNote: '🔒 此系統包含全社社員真實姓名、信箱與出缺席紀錄，因個資保護不開放公開連結。以下為內建點陣舞台座位表與架構預覽：',
+        mockupHtml: `
+          <div style="background:#ffffff; color:#0f172a; padding:16px; border-radius:14px; border:1.5px solid #cbd5e1; text-align:center;">
+            <div style="font-size:0.82rem; font-weight:800; color:#475569; margin-bottom:10px;">🎼 互動式 SVG 點陣舞台座位表（請假人員自動隱藏並重排座位）</div>
+            <svg viewBox="0 0 600 220" style="width:100%; max-width:520px; height:auto; background-image:radial-gradient(#cbd5e1 1px, transparent 1px); background-size:14px 14px; border:1px solid #e2e8f0; border-radius:10px;">
+              <g transform="translate(230, 170)">
+                <rect x="0" y="0" width="140" height="34" rx="6" fill="#0b0f19"/>
+                <text x="70" y="23" font-size="14" font-weight="800" fill="#f59e0b" text-anchor="middle" letter-spacing="4">指揮</text>
+              </g>
+              <g transform="translate(170, 120) rotate(-20)">
+                <line x1="-55" y1="0" x2="55" y2="0" stroke="#0f172a" stroke-width="2"/>
+                <circle cx="-35" cy="0" r="11" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+                <circle cx="0" cy="0" r="11" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+                <circle cx="35" cy="0" r="11" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+                <text x="0" y="-18" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">Cl.1</text>
+              </g>
+              <g transform="translate(420, 125) rotate(12)">
+                <line x1="-45" y1="0" x2="45" y2="0" stroke="#0f172a" stroke-width="2"/>
+                <circle cx="-25" cy="0" r="11" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+                <circle cx="25" cy="0" r="11" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+                <text x="0" y="-18" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">Fl.</text>
+              </g>
+              <g transform="translate(300, 55)">
+                <line x1="-90" y1="0" x2="90" y2="0" stroke="#0f172a" stroke-width="2"/>
+                <circle cx="-70" cy="0" r="11" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+                <circle cx="-35" cy="0" r="11" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+                <circle cx="0" cy="0" r="11" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+                <circle cx="35" cy="0" r="11" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+                <circle cx="70" cy="0" r="11" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+                <text x="0" y="-18" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">Tpt. 小號</text>
+              </g>
+            </svg>
+          </div>
+        `,
+        steps: [
+          { title: '單次打包預載 (initAppBundle)', desc: '登入瞬間由後端一次性回傳個人設定、近期團練、借教室紀錄與各聲部真實名冊人數，搭配 SWR 背景靜默同步。' },
+          { title: '嚴謹的琴房預約與團練規則', desc: '限定當週週五中午 12:00 前僅能預約下週時段；團練請假於當天中午 12:00 截止，並支援隨時取消請假（銷假）恢復出席。' },
+          { title: '智慧分類通知信與跨表同步', desc: '每週日 15:00 自動寄發審核結果，系統自動依核定教室字首（B棟群美中心押證借鑰匙 / D棟管理員簽名）動態生成對應須知。' }
+        ]
+      },
+      polaroid: {
+        title: '拍立得小卡專屬編輯器 — 架構深度解析',
+        privacyNote: '🌐 公開營運中工具：提供電商買家直接於瀏覽器完成客製化排版',
+        liveUrl: 'http://shopee.photo.yangtechnology.com/',
+        mockupHtml: `
+          <div style="background:var(--bg-card); padding:16px; border-radius:12px; border:1px solid var(--border-color);">
+            <div style="font-weight:800; color:#db2777; margin-bottom:6px;">🎨 瀏覽器端 Canvas 高解析度合成與電商自動化</div>
+            <p style="font-size:0.86rem; color:var(--text-secondary);">解決傳統客製化商品賣家需人工逐一與買家對稿的痛點，買家於前端透過 Fabric.js 自由縮放、旋轉與套用邊框後，後端自動透過 GmailApp 核對蝦皮訂單編號並歸檔印刷圖。</p>
+          </div>
+        `,
+        steps: [
+          { title: 'Fabric.js 互動式畫布', desc: '支援多圖層拖曳、手勢雙指縮放、拍立得留白比例鎖定與文字簽名疊加。' },
+          { title: 'GmailApp 蝦皮訂單自動解析', desc: '自動化讀取電商通知信件，擷取訂單編號與買家資訊進行防呆驗證，大幅縮短出貨人工核對時間。' }
+        ]
+      },
+      cram: {
+        title: '大補習班排課與請假系統 — 架構深度解析',
+        privacyNote: '🔒 內部教務系統：涉及補習班師資與學生排課個資，不開放公開連結。',
+        mockupHtml: `
+          <div style="background:var(--bg-card); padding:16px; border-radius:12px; border:1px solid var(--border-color);">
+            <div style="font-weight:800; color:#2563eb; margin-bottom:6px;">📅 智慧樣板避讓法 (Smart Template Scheduling)</div>
+            <p style="font-size:0.86rem; color:var(--text-secondary);">針對大型補習班每週常態課表與臨時調代課衝突，系統採用樣板避讓演算法自動偵測教室與師資時段重疊，並即時同步至 Google Calendar。</p>
+          </div>
+        `,
+        steps: [
+          { title: '直覺化通訊審批 UI', desc: '將傳統繁瑣的表單簽核轉化為類通訊軟體的狀態同步介面，主任與導師可一鍵指派代課。' },
+          { title: '多維度資料表與行事曆同步', desc: '請假或調課核准瞬間，自動更新主課表、代課紀錄表與教師個人行事曆，達成零時差教務管理。' }
+        ]
+      },
+      smartorder: {
+        title: '智慧點餐系統 — 架構深度解析',
+        privacyNote: '🔒 內部團膳系統：專為高中社團與合作餐廳打造，因涉及成員名單不開放公開連結。',
+        mockupHtml: `
+          <div style="background:var(--bg-card); padding:16px; border-radius:12px; border:1px solid var(--border-color);">
+            <div style="font-weight:800; color:#16a34a; margin-bottom:6px;">📱 前後端分離與訂單狀態機</div>
+            <p style="font-size:0.86rem; color:var(--text-secondary);">採用 Tailwind CSS 打造極簡流暢的點餐介面，並內建 Intro.js 步驟式導覽；後台提供一鍵收單、品項彙總統計與班級/社團分帳結算報表。</p>
+          </div>
+        `,
+        steps: [
+          { title: '訂單生命週期狀態機', desc: '嚴格控管「開放點餐 → 截止鎖單 → 店家備餐 → 已送達發放」完整狀態流轉，防止逾時改單造成帳務混亂。' },
+          { title: '動態報表與營收分析', desc: '自動將數百筆個人客製化訂單聚合為店家廚房備料單與總務收款核對表。' }
+        ]
+      }
+    };
+
+    function openProjectModal(key) {
+      const data = PROJECT_DETAILS[key];
+      if (!data) return;
+
+      document.getElementById('modalTitle').textContent = data.title;
+      const stepsHtml = (data.steps || []).map((s, idx) => `
+        <div class="arch-flow-step">
+          <strong>0${idx + 1}. ${s.title}</strong>
+          <span>${s.desc}</span>
+        </div>
+      `).join('');
+
+      const liveBtnHtml = data.liveUrl ? `
+        <div style="margin-top: 22px; text-align: right;">
+          <a href="${data.liveUrl}" target="_blank" rel="noopener noreferrer" class="btn-action btn-live">
+            🌐 立即前往線上系統體驗 ↗
+          </a>
+        </div>
+      ` : '';
+
+      document.getElementById('modalContent').innerHTML = `
+        <div style="font-size:0.86rem; font-weight:700; color:var(--text-secondary); margin-bottom:14px;">
+          ${data.privacyNote}
+        </div>
+        <div class="preview-mockup">
+          ${data.mockupHtml}
+        </div>
+        <h4 style="font-size:0.98rem; font-weight:800; color:var(--text-main); margin-bottom:8px;">⚙️ 核心技術與架構實作細節</h4>
+        <div class="arch-flow-grid">
+          ${stepsHtml}
+        </div>
+        ${liveBtnHtml}
+      `;
+
+      document.getElementById('projectModal').classList.add('open');
+    }
+
+    function closeProjectModal() {
+      document.getElementById('projectModal').classList.remove('open');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeProjectModal();
+    });
+  </script>
+</body>
+</html>
